@@ -1,6 +1,3 @@
-Conrad Dudziak - CSS 436 Autumn 2019
-Program 1: Crawl
-
 USES:
   Microsoft.NET
   Framework64\v4.0.30319
