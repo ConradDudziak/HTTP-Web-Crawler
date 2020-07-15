@@ -1,5 +1,4 @@
-// Conrad Dudziak - CSS 436 Autumn 2019
-// Program 1: Crawl
+// Conrad Dudziak
 // This program receives a url and number of hops. The program will then
 // make an http GET call on the url, and hop to the first <a href> tagged
 // http url in the resulting HTML.
@@ -51,9 +50,7 @@ namespace CSS436Crawler {
 		// url in the html will be visited instead.
 		static string Crawl(string url, int numHops, List<string> visitedUrls) {
 			try {
-				using (var client = new HttpClient(new HttpClientHandler { 
-													AutomaticDecompression = DecompressionMethods.GZip 
-													| DecompressionMethods.Deflate })) {
+				using (var client = new HttpClient(new HttpClientHandler { AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate })) {
 					HttpResponseMessage response = client.GetAsync(url).Result;
 					try {
 						response.EnsureSuccessStatusCode();
@@ -73,18 +70,7 @@ namespace CSS436Crawler {
 							return Crawl(nextUrl, numHops - 1, visitedUrls);
 						}
 					} catch (Exception e) {
-						// Checks if the status code was a 300 (Redirect)
-						if (response.StatusCode == HttpStatusCode.Ambiguous
-							|| response.StatusCode == HttpStatusCode.MultipleChoices
-							|| response.StatusCode == HttpStatusCode.Found
-							|| response.StatusCode == HttpStatusCode.Moved
-							|| response.StatusCode == HttpStatusCode.Redirect
-							|| response.StatusCode == HttpStatusCode.TemporaryRedirect) {
-							// Visit the url that the 300s are redirecting the crawler to
-							return Crawl(response.Headers.Location.AbsolutePath, numHops, visitedUrls);
-						} else {
-							return e.Message;
-						}
+						return e.Message;
 					}
 				}
 			} catch (Exception e) {
